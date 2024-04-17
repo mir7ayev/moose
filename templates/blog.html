@@ -1,0 +1,91 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block menu %}
+    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+    <li class="nav-item active"><a href="/blog/" class="nav-link">Articles</a></li>
+    <li class="nav-item"><a href="/about/" class="nav-link">About</a></li>
+    <li class="nav-item"><a href="/contact/" class="nav-link">Contact</a></li>
+{% endblock %}
+
+{% block content %}
+
+    <section class="hero-wrap hero-wrap-2">
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 text-center ftco-animate pt-5">
+                    <h1 class="mb-3 bread">Our Blog</h1>
+                    <p class="breadcrumbs"><span class="mr-2"><a href="/">Home <i
+                            class="fa fa-chevron-right"></i></a></span>
+                        <span>Blog <i class="fa fa-chevron-right"></i></span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ftco-section">
+        <div class="container-fluid">
+            <div class="row">
+                {% for p in posts %}
+                    <div class="col-md-6 col-lg-4 blog-wrap blog-wrap-2 px-md-5 ftco-animate">
+                        <a href="/blog-single/{{ p.id }}/" class="img img-blog w-100 border d-block"
+                           style="background-image: url({{ p.image.url }});">
+                        </a>
+                        <div class="text text-2 py-4 p-0 ftco-animate">
+                            <p class="meta">
+                                <a href="#"><span class="fa fa-calendar mr-2"></span>{{ p.created_at }}</a>
+                                <a href="#"><span class="fa fa-user mr-2"></span>{{ p.user.username }}</a>
+                                <a href="#" class="meta-chat"><span class="fa fa-comment mr-2"></span> {{ p.total }}</a>
+                            </p>
+                            <h2 class="mb-4"><a href="/blog-single/{{ p.id }}/">
+                                {{ p.title }}
+                            </a>
+                            </h2>
+                            <div class="icon d-flex align-items-center">
+                                <div class="img"
+                                     style="background-image: url({% static 'images/person_1.jpg' %});"></div>
+                                <div class="position pl-3">
+                                    <h4 class="mb-0">{{ p.user.username }}</h4>
+                                    <span>CEO, Product Designer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row mt-5">
+                <div class="col text-center">
+                    <div class="block-27">
+                        <ul class="pagination justify-content-center">
+                            {% if posts.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ posts.previous_page_number }}">
+                                        <
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% for page in posts.paginator.page_range %}
+                                {% if page == posts.number %}
+                                    <li class="page-item active">
+                                        <a class="page-link">{{ page }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a href="?page={{ page }}" class="page-link">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if posts.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ posts.next_page_number }}">
+                                        >
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
